@@ -70,8 +70,8 @@ def test():
 
     test_img_dirs = os.path.expanduser(args.test_img_dirs)
     test_dataset = LPRDataLoader(test_img_dirs.split(','), args.img_size, args.lpr_max_len)
-    try:
-        Greedy_Decode_Eval(lprnet, test_dataset, args)
+    
+    Greedy_Decode_Eval(lprnet, test_dataset, args)
     # finally:
     #     cv2.destroyAllWindows()
 
