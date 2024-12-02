@@ -72,8 +72,8 @@ def test():
     test_dataset = LPRDataLoader(test_img_dirs.split(','), args.img_size, args.lpr_max_len)
     try:
         Greedy_Decode_Eval(lprnet, test_dataset, args)
-    finally:
-        cv2.destroyAllWindows()
+    # finally:
+    #     cv2.destroyAllWindows()
 
 def Greedy_Decode_Eval(Net, datasets, args):
     # TestNet = Net.eval()
