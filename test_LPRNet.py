@@ -62,7 +62,7 @@ def test():
 
     # load pretrained model
     if args.pretrained_model:
-        lprnet.load_state_dict(torch.load(args.pretrained_model))
+        lprnet.load_state_dict(torch.load(args.pretrained_model, weights_only = True))
         print("load pretrained model successful!")
     else:
         print("[Error] Can't found pretrained mode, please check!")
