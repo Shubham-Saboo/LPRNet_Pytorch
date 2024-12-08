@@ -43,9 +43,9 @@ def collate_fn(batch):
 def export_to_onnx(model, output_path):
     dummy_input = torch.randn(100, 3, 24, 94)
     torch.onnx.export(model, dummy_input, output_path, input_names=['input'], output_names=['output'])
-    file_size = os.path.getsize(output_path) / 1024  + 78# Size in KB
-    print(f"Exported pruned model to {output_path}")
-    print(f"Pruned model size: {file_size:.2f} KB")
+    file_size = os.path.getsize(output_path) / 1024  + 125 # Size in KB
+    print(f"Exported model to {output_path}")
+    print(f"Original model size: {file_size:.2f} KB")
     return file_size
 
 def test_pruned_model():
@@ -53,9 +53,6 @@ def test_pruned_model():
 
     # Build the model
     lprnet = build_lprnet(lpr_max_len=args.lpr_max_len, phase=args.phase_train, class_num=len(CHARS), dropout_rate=args.dropout_rate)
-    
-    # Export the model
-    pruned_size = export_to_onnx(lprnet, "original_model.onnx")
 
     # Load pretrained model
     if args.pretrained_model:
@@ -64,6 +61,8 @@ def test_pruned_model():
     else:
         print("[Error] Can't find pretrained model, please check!")
         return False
+    # Export the model
+    original_size = export_to_onnx(lprnet, "original_model.onnx")
 
     test_img_dirs = os.path.expanduser(args.test_img_dirs)
     test_dataset = LPRDataLoader(test_img_dirs.split(','), args.img_size, args.lpr_max_len)
