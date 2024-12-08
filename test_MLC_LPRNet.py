@@ -89,6 +89,14 @@ def collate_fn(batch):
     labels = np.asarray(labels).flatten().astype(np.float32)
     return (torch.stack(imgs, 0), torch.from_numpy(labels), lengths)
 
+def export_to_onnx(model, output_path):
+    dummy_input = torch.randn(100, 3, 24, 94)
+    torch.onnx.export(model, dummy_input, output_path, input_names=['input'], output_names=['output'])
+    file_size = os.path.getsize(output_path) / 1024  # Size in KB
+    print(f"Exported model to {output_path}")
+    print(f"Original model size: {file_size:.2f} KB")
+    return file_size
+
 def compile_model_with_auto_scheduler(model, input_shape):
     model.eval()
     input_data = torch.randn(input_shape)
@@ -153,6 +161,8 @@ def test_pruned_quantized_model():
     tvm_module, dev = compile_model_with_auto_scheduler(lprnet_quantized, input_shape)
 
     print("Compiled model using TVM Auto-scheduler")
+
+    compiled_size = export_to_onnx(lprnet, "compiled_model.onnx")
 
     test_img_dirs = os.path.expanduser(args.test_img_dirs)
     test_dataset = LPRDataLoader(test_img_dirs.split(','), args.img_size, args.lpr_max_len)
