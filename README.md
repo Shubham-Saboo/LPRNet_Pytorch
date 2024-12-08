@@ -1,4 +1,4 @@
-# LPRNet_Optimzation_Project
+# LPRNet_Optimization_Project
 In this project, we explore multiple optimization techniques to optimize the LPRNet Pytorch model, to efficiently recognize vehicle plates.
 
 Model Compression:
